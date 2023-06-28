@@ -28,28 +28,7 @@ class ArrayUtils {
         return array_filter($array, $callback, ARRAY_FILTER_USE_BOTH);
     }
 
-    /**
-     * Sort an array by its keys.
-     *
-     * @param array $array The array to sort.
-     * @param int $sortFlags Optional flags to modify sorting behavior.
-     * @return array The sorted array.
-     */
-    public static function sortByKey(array $array, $sortFlags = SORT_REGULAR) {
-        ksort($array, $sortFlags);
-        return $array;
-    }
-
-    /**
-     * Merge two or more arrays recursively.
-     *
-     * @param array $array1 The first array to merge.
-     * @param array $array2 The second array to merge.
-     * @return array The merged array.
-     */
-    public static function mergeRecursive(array $array1, array $array2) {
-        return array_merge_recursive($array1, $array2);
-    }
+    
 
 
     /**
@@ -63,5 +42,73 @@ class ArrayUtils {
         return array_keys($array) !== range(0, count($array) - 1);
     }
 
-    
+
+    /**
+     * Transpose a multidimensional array.
+     *
+     * @param array $array The array to transpose.
+     * @return array The transposed array.
+     */
+    public static function arrayTranspose(array $array) {
+        $transposed = [];
+        foreach ($array as $rowKey => $row) {
+            foreach ($row as $colKey => $value) {
+                $transposed[$colKey][$rowKey] = $value;
+            }
+        }
+        return $transposed;
+    }
+
+    /**
+     * Compute the intersection of arrays using keys.
+     *
+     * @param array ...$arrays The arrays to intersect.
+     * @return array The intersection of arrays using keys.
+     */
+    public static function arrayIntersectByKey(array ...$arrays) {
+        return array_intersect_key(...$arrays);
+    }
+
+
+    /**
+     * Shuffle an associative array without losing its keys.
+     *
+     * @param array $array The array to shuffle.
+     * @return array The shuffled array.
+     */
+    public static function shuffleAssoc(array $array) {
+        $keys = array_keys($array);
+        shuffle($keys);
+        $shuffledArray = [];
+        foreach ($keys as $key) {
+            $shuffledArray[$key] = $array[$key];
+        }
+        return $shuffledArray;
+    }
+
+    /**
+     * Get the intersection of multiple arrays.
+     *
+     * @param array ...$arrays The arrays to intersect.
+     * @return array The intersection of the arrays.
+     */
+    public static function multiArrayIntersect(array ...$arrays) {
+        $intersect = array_shift($arrays);
+        foreach ($arrays as $array) {
+            $intersect = array_intersect($intersect, $array);
+        }
+        return $intersect;
+    }
+
+    /**
+     * Check if an array is a subset of another array.
+     *
+     * @param array $subset The array to check.
+     * @param array $superset The superset array.
+     * @return bool True if $subset is a subset of $superset, false otherwise.
+     */
+    public static function isSubset(array $subset, array $superset) {
+        return count(array_diff($subset, $superset)) === 0;
+    }
+
 }
