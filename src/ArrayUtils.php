@@ -111,4 +111,71 @@ class ArrayUtils {
         return count(array_diff($subset, $superset)) === 0;
     }
 
+
+    /**
+     * Group an array of associative arrays by a specific key.
+     *
+     * @param array $array The array to group.
+     * @param string $key The key to group by.
+     * @return array The grouped array.
+     */
+    public static function groupBy(array $array, $key) {
+        $grouped = [];
+        foreach ($array as $item) {
+            $grouped[$item[$key]][] = $item;
+        }
+        return $grouped;
+    }
+
+
+    /**
+     * Get a random element from an array.
+     *
+     * @param array $array The array to choose from.
+     * @return mixed|null A random element from the array, or null if the array is empty.
+     */
+    public static function randomElement(array $array) {
+        if (empty($array)) {
+            return null;
+        }
+        $keys = array_rand($array);
+        return $array[$keys];
+    }
+
+    /**
+     * Sorts a multidimensional array by a specific column value.
+     *
+     * @param array $array The array to sort.
+     * @param string $column The column to sort by.
+     * @param int $direction Sorting direction (SORT_ASC or SORT_DESC).
+     * @param int $flags Flags to modify sorting behavior.
+     * @return array The sorted array.
+     */
+    public static function sortByColumn(array &$array, $column, $direction = SORT_ASC, $flags = SORT_REGULAR) {
+        $sortColumn = [];
+        foreach ($array as $key => $row) {
+            $sortColumn[$key] = $row[$column];
+        }
+        array_multisort($sortColumn, $direction, $flags, $array);
+        return $array;
+    }
+
+    /**
+     * Computes the sum of values in a multidimensional array recursively.
+     *
+     * @param array $array The array to compute the sum.
+     * @return float The sum of values.
+     */
+    public static function arraySumRecursive(array $array) {
+        $sum = 0;
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                $sum += self::arraySumRecursive($value);
+            } else {
+                $sum += $value;
+            }
+        }
+        return $sum;
+    }
+
 }
